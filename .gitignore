@@ -11,3 +11,15 @@
 *.lai
 *.la
 *.a
+# emacs garbage
+*~
+# python
+*.pyc
+# executable
+graph_similarity
+# folders
+figs
+output_data
+# random
+.depend
+err
