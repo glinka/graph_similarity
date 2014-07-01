@@ -1,4 +1,3 @@
-#include "util_fns.h"
 
 template <typename T>
 void save_matrix(const std::vector< std::vector<T> >& A, std::ofstream& output_file, const std::string header, const char delim) {

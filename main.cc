@@ -4,13 +4,14 @@
 #include "chunglu_gen.h"
 #include "erdosrenyi_gen.h"
 #include "embeddings.h"
-#include "kernels.h"
+// #include "kernels.h"
+#include "gaussian_kernel.h"
 #include "dmaps.h"
 #include "util_fns.h"
 
 int main(int argc, char** argv) {
 
-  std::cout << "<------------------------------>" << std::endl;
+  std::cout << "<---------------------------------------->" << std::endl;
 
   const int graph_size = atoi(argv[2]);
   std::string graph_type;
@@ -31,9 +32,9 @@ int main(int argc, char** argv) {
       graph_params[i][0] = pmin + i*dp;
     }
 
-    std::cout << "Generating " << n_pts << " Erdos-Renyi graphs" << std::endl;
-    std::cout << "->" << "graph size is: " << graph_size << std::endl;
-    std::cout << "->" << n_pvals << " p values between " << pmin << " and " << pmax << std::endl;
+    std::cout << "--> Generating " << n_pts << " Erdos-Renyi graphs" << std::endl;
+    std::cout << "---> " << "graph size is: " << graph_size << std::endl;
+    std::cout << "---> " << n_pvals << " p values between " << pmin << " and " << pmax << std::endl;
   }
 
 
@@ -62,10 +63,10 @@ int main(int argc, char** argv) {
       }
     }
 
-    std::cout << "Generating " << n_pts << " Chung-Lu graphs" << std::endl;
-    std::cout << "->" << "graph size is: " << graph_size << std::endl;
-    std::cout << "->" << n_pvals << " p values between " << pmin << " and " << pmax << std::endl;
-    std::cout << "->" << n_rvals << " r values between " << rmin << " and " << rmax << std::endl;
+    std::cout << "--> Generating " << n_pts << " Chung-Lu graphs" << std::endl;
+    std::cout << "----> " << "graph size is: " << graph_size << std::endl;
+    std::cout << "----> " << n_pvals << " p values between " << pmin << " and " << pmax << std::endl;
+    std::cout << "----> " << n_rvals << " r values between " << rmin << " and " << rmax << std::endl;
   }
 
   const int n_spec_params = 100;
@@ -83,12 +84,15 @@ int main(int argc, char** argv) {
   for(int i = 0; i < n_pts; i++) {
     graph_embedding[i] = spectral_embedding(alg->gen_unweighted_graph(graph_size, graph_params[i]), spectral_params);
   }
-  std::cout << "Graphs generated" << std::endl;
+  std::cout << "--> Graphs generated" << std::endl;
   std::vector<double> eigvals(n_pts);
   std::vector< std::vector<double> > eigvects(n_pts);
   std::vector< std::vector<double> > W(n_pts);
-  dmaps::map(graph_embedding, kernels::gaussian_kernel, eigvals, eigvects, W, 1e-08);
-  std::cout << "DMAP computed" << std::endl;
+  double median = get_median(get_squared_distances(graph_embedding));
+  std::cout << "--> Median squared distance: " << median << std::endl;
+  Gaussian_Kernel* gk = new Gaussian_Kernel(median);
+  dmaps::map(graph_embedding, gk, eigvals, eigvects, W, 1e-08);
+  std::cout << "--> DMAP computed" << std::endl;
   
   std::ofstream output_eigvals("./output_data/" + graph_type + "_embedding_eigvals.csv");
   std::ofstream output_eigvects("./output_data/" + graph_type + "_embedding_eigvects.csv");
@@ -104,6 +108,6 @@ int main(int argc, char** argv) {
   // output_W.close();
   output_graphparams.close();
 
-  std::cout << "<------------------------------>" << std::endl;
+  std::cout << "<---------------------------------------->" << std::endl;
   return 1;
 }

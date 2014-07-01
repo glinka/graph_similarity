@@ -2,16 +2,15 @@
 #include <Eigen/Eigenvalues>
 #include <Eigen/Geometry>
 #include <cmath>
-#include "dmaps.h"
 
 template <typename T>
-void dmaps::map(std::vector< T > &input_data, double (*kernel_fn)(const T&, const T&), std::vector<double>& eigvals, std::vector< std::vector<double> >& eigvects, std::vector< std::vector<double> >& W_out, const double weight_threshold) {
+void dmaps::map(std::vector< T > &input_data, Kernel_Function<T>* kernel_fn, std::vector<double>& eigvals, std::vector< std::vector<double> >& eigvects, std::vector< std::vector<double> >& W_out, const double weight_threshold) {
   int ndata = input_data.size();
   Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> W(ndata, ndata);
   int thresholded_entries = 0;
   for(int i = 0; i < ndata; i++) {
     for(int j = 0; j < ndata; j++) {
-      W(i,j) = (*kernel_fn)(input_data[i], input_data[j]);
+      W(i,j) = kernel_fn->kernel(input_data[i], input_data[j]);
       if(W(i,j) < weight_threshold) {
 	W(i,j) = 0;
 	thresholded_entries++;

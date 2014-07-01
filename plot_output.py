@@ -49,7 +49,7 @@ def plot_chunglu_deg_dists():
                 graphs.append(graph)
             plot_avg_degree_dist(graphs, params)
 
-def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=10):
+def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=5):
     if ax is None:
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -70,7 +70,7 @@ def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=10):
     ax.set_xlabel('p')
     ax.set_ylabel('r')
     for i in range(2, nplots+2):
-        ax.scatter(pvals, rvals, c=eigvects[-i], lw=0, alpha=0.7)
+        ax.scatter(pvals, rvals, c=eigvects[-i], s=50, lw=0, alpha=0.7)
         ax.set_title("Chung-Lu ensemble coloring: eigenvector " + str(i-1))
         plt.savefig("./figs/chunglu_coloring/eigvect_ " + str(i-1) + ".png")
 
@@ -127,7 +127,6 @@ def plot_erdosrenyi_embedding(eigvals, eigvects, graph_params, ax=None, maxindex
             ax.set_xlabel('Eigvect ' + str(i+1))
             ax.set_ylabel('Eigvect ' + str(j+1))
             ax.set_title('Erdos-Renyi embedding')
-            print 'i =', i+1, 'j =', j+1
             plt.savefig("./figs/erdosrenyi_embedding/eigvects_ " + str(i+1) + str(j+1) + ".png")
 
 
