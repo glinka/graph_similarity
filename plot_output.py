@@ -49,7 +49,7 @@ def plot_chunglu_deg_dists():
                 graphs.append(graph)
             plot_avg_degree_dist(graphs, params)
 
-def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=5):
+def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=None):
     if ax is None:
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -69,10 +69,12 @@ def plot_chunglu_coloring(eigvals, eigvects, graph_params, ax=None, nplots=5):
     ax.set_ylim((np.min(rvals), np.max(rvals)))
     ax.set_xlabel('p')
     ax.set_ylabel('r')
+    if nplots is None:
+        nplots = eigvals.shape[0] - 1
     for i in range(2, nplots+2):
         ax.scatter(pvals, rvals, c=eigvects[-i], s=50, lw=0, alpha=0.7)
         ax.set_title("Chung-Lu ensemble coloring: eigenvector " + str(i-1))
-        plt.savefig("./figs/chunglu_coloring/eigvect_ " + str(i-1) + ".png")
+        plt.savefig("./figs/chunglu_coloring/eigvect_" + str(i-1) + ".png")
 
 def plot_erdosrenyi_coloring(eigvals, eigvects, graph_params, ax=None, nplots=4):
     if ax is None:
@@ -154,9 +156,9 @@ if __name__=="__main__":
         graph_params = None
         for infile in args.input_files:
             if "eigvals" in infile:
-                eigvals, params = uf.get_data(infile, header_rows=1)
+                eigvals = uf.get_data(infile, header_rows=0)
             if "eigvects" in infile:
-                eigvects, params = uf.get_data(infile, header_rows=1)
+                eigvects = uf.get_data(infile, header_rows=0)
             if "graphparams" in infile:
                 graph_params = uf.get_data(infile, header_rows=0)
         plot_chunglu_coloring(eigvals, eigvects, graph_params)

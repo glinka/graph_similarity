@@ -2,12 +2,12 @@
 # why isn't main.o included in .depend? #
 #########################################
 
-SRCS=main.cc graph_gen_alg.cc chunglu_gen.cc erdosrenyi_gen.cc kernels.cc util_fns.cc
+SRCS=main.cc graph_gen_alg.cc chunglu_gen.cc erdosrenyi_gen.cc util_fns.cc
 OBJECTS=$(SRCS:.cc=.o)
 
 CXX = g++
 
-CXXFLAGS = -g -Wall -Wno-sign-compare -std=c++0x -O3
+CXXFLAGS = -g -Wall -I/home/oakridge/holiday/workspace/newton_gmres/ -laes -Wno-sign-compare -std=c++0x -O3
 
 all: graph_embedding
 

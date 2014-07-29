@@ -11,7 +11,7 @@ double Gaussian_Kernel::kernel(const std::vector<double>& x1, const std::vector<
   int n = x1.size();
   double norm = 0;
   for(int i = 0; i < n; i++) {
-    norm += pow(x1[i] - x2[i], 2);
+    norm += std::pow(x1[i] - x2[i], 2);
   }
-  return exp(-norm/epsilon_);
+  return std::exp(-norm/epsilon_);
 }
