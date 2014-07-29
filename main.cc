@@ -9,8 +9,8 @@
 #include "dmaps.h"
 #include "util_fns.h"
 
-// for testing arnoldi
-#include "dmaps_EIG.h"
+// // for testing arnoldi
+// #include "dmaps_EIG.h"
 
 int main(int argc, char** argv) {
 

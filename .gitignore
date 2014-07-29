@@ -17,6 +17,7 @@
 *.pyc
 # executable
 graph_similarity
+graph_embedding
 # folders
 figs
 output_data

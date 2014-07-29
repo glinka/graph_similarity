@@ -7,21 +7,21 @@ OBJECTS=$(SRCS:.cc=.o)
 
 CXX = g++
 
-CXXFLAGS = -g -Wall -I/home/oakridge/holiday/workspace/newton_gmres/ -laes -Wno-sign-compare -std=c++0x -O3
+CXXFLAGS = -g -Wall -I ~/workspace/newton_gmres/ -L ~/build/lib -laes -Wno-sign-compare -std=c++0x -O3
 
 all: graph_embedding
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) -c $<  $(CXXFLAGS)
 
 graph_embedding: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) -o $@ $^  $(CXXFLAGS)
 
 depend: .depend
 
 .depend: $(SRCS)
 	rm -f ./.depend
-	$(CXX) $(CXXFLAGS) -MM -MT $^ > ./.depend
+	$(CXX) -MM -MT $^ $(CXXFLAGS) > ./.depend
 
 clean:
 	$(RM) *.o 
